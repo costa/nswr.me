@@ -53,11 +53,12 @@ __END__
     - if @nswrs && !@nswrs.empty?
       - for qstn in @nswrs.keys
         %form(method="post" action="/#{params[:id]}/#{qstn}")
-          %pre&= qstn+'?'
+          %a{ :href => "/#{params[:id]}/#{qstn}" }
+            %pre&= qstn+'?'
           %textarea(rows="3" cols="42" name="nswr")&= @nswrs[qstn]
           %input(type="submit" value="nswr")
     - else
       Tip: the address bar is your friend! Try typing
       = succeed ',' do
         %kbd&= 'nswr.me/' + params[:id] + "/What exactly don't you understand?"
-      getting a blank page and then coming back here again.<br />Refresh often.
+      getting a blank page and then coming back here again. Refresh!
