@@ -24,14 +24,15 @@ end
 post '/:id/*' do
   qstn = params[:splat][0].strip
   nswrs = mc.get(params[:id]) || {}
-  redirect "/#{params[:id]}" if qstn.empty? || !nswrs[qstn]
 
-  if params[:nswr].to_s.strip.empty?  # FIXME thread unsafe!
-    nswrs[qstn] = params[:nswr]
-  else
-    nswrs.delete(qstn)
+  if !qstn.empty? && nswrs[qstn]
+    unless params[:nswr].to_s.strip.empty?  # FIXME thread unsafe!
+      nswrs[qstn] = params[:nswr]
+    else
+      nswrs.delete(qstn)
+    end
+    mc.set(params[:id], nswrs)
   end
-  mc.set(params[:id], nswrs)
 
   redirect "/#{params[:id]}"
 end
